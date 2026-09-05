@@ -24,9 +24,24 @@ const api = express();
 api.use(express.json())
 const port = 3001;
 
+Object.filter = (obj, predicate) => 
+    Object.keys(obj)
+          .filter( key => predicate(obj[key]) )
+          .reduce( (res, key) => (res[key] = obj[key], res), {} );
+
 api.get('/ping', (req, res) => {
   res.send('pong');
 });
+
+function removeBlankAttributes(obj) {
+    const result = {};
+    for (const key in obj) {
+        if (obj[key] !== null && obj[key] !== undefined) {
+            result[key] = obj[key];
+        }
+    }
+    return result;
+}
 
 
 
@@ -39,14 +54,21 @@ api.post("/location/add", (req,res) => {
     let { body } = req
 
     let obj = {
+      // location details
       address: body.address,
       description: body.description,
-      rampAvailablity : body.rampAvailability,
+      walkway: body.walkway,
+      rampAvailability : body.rampAvailability,
+      parking: body.parking,
+      twsi: body.twst,
       email: body.email,
+      details: body.details,
       obstruction: body.obstruction,
+      image: body.image,
+      ramp: body.ramp,
       likes: 0,
       dislikes: 0,
-      status: body.status
+      status: body.status,
     }
 
     set(ref(database, 'location/' + body.locationId), obj).then(() =>{
@@ -61,14 +83,30 @@ api.post("/location/add", (req,res) => {
   }
 })
 
-api.post("/location/like", (req, res) => {
+api.post("/location/update", (req, res) => {
   try {
     let { body } = req
-    update(ref(database, 'location/' + body.locationId), {
-      likes: body.likediff
-    })
 
-    return httpResponse(201, "Success", {}, res)
+    let obj = {
+      address: body.address != null || undefined ? body.address : null,
+      description: body.description != null || undefined ? body.description : null,
+      walkway: body.walkway != null || undefined ? body.walkway : null,
+      rampAvailability : body.rampAvailability != null || undefined ? body.rampAvailability : null,
+      parking: body.parking != null || undefined ? body.parking : null,
+      twsi: body.twst != null || undefined ? body.twst : null,
+      email: body.email != null || undefined ? body.email : null,
+      details: body.details != null || undefined ? body.details : null,
+      obstruction: body.obstruction != null || undefined ? body.obstruction : null,
+      image: body.image != null || undefined ? body.image : null,
+      ramp: body.ramp != null || undefined ? body.ramp : null,
+      likes: body.likes != null || undefined ? body.likes : null,
+      dislikes: body.dislikes != null || undefined ? body.dislikes : null,
+      status: body.status != null || undefined ? body.status : null,
+    }
+
+    update(ref(database, 'location/' + body.locationId), removeBlankAttributes(obj))
+
+    return httpResponse(201, "Success", removeBlankAttributes(obj), res)
 
     
   } catch (error) {
@@ -76,20 +114,6 @@ api.post("/location/like", (req, res) => {
   }
 })
 
-api.post("/location/dislike", (req, res) => {
-    try {
-    let { body } = req
-    update(ref(database, 'location/' + body.locationId), {
-      dislikes: body.likediff
-    })
-
-    return httpResponse(201, "Success", {}, res)
-
-    
-  } catch (error) {
-    return httpResponse(400, "Error", JSON.stringify(error), res)
-  }
-})
 
 api.post("/location/delete", (req, res) => {
   try {
@@ -99,7 +123,6 @@ api.post("/location/delete", (req, res) => {
   } catch {
     return httpResponse(400, "Error", JSON.stringify(error), res)
   }
-
 })
 
 api.get("/location/getall", (req, res) => {
@@ -114,12 +137,31 @@ api.get("/location/getall", (req, res) => {
 })
 
 api.get("/location/getpending", (req, res) => {
-  let { body } = req
-
+  let result;
+  get(child(ref(database), 'location/')).then((snapshot) => {
+    if (snapshot.exists()) {
+      result = snapshot.val()
+      return httpResponse(201, "Success", Object.filter(result, a => a.status == "pending"), res)
+    } else {
+      return httpResponse(404, "Error", "Error no data available", res)
+    }}).catch((error) => {
+      return httpResponse(400, "Error", JSON.stringify(error), res)
+    });
+    let filtered = Object.filter(result, a => a.status == "pending")
+    return httpResponse(201, "Success", filtered, res)
 })
 
-api.post("/location/getapproved", (req, res) => {
-  let { body } = req
+api.get("/location/getapproved", (req, res) => {
+  let result;
+  get(child(ref(database), 'location/')).then((snapshot) => {
+    if (snapshot.exists()) {
+      result = snapshot.val()
+      return httpResponse(201, "Success", Object.filter(result, a => a.status != "pending"), res)
+    } else {
+      return httpResponse(404, "Error", "Error no data available", res)
+    }}).catch((error) => {
+      return httpResponse(400, "Error", JSON.stringify(error), res)
+    });
 
 })
 
