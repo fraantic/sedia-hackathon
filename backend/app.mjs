@@ -1,4 +1,5 @@
 import { getDatabase, ref, set, update, remove, get, child  } from "firebase/database";
+import { v4 as uuidv4, v6 as uuidv6 } from 'uuid';
 import { initializeApp } from "firebase/app";
 import express from 'express';
 import dotenv from 'dotenv'
@@ -50,7 +51,7 @@ api.post('/test', (req, res) => {
 });
 
 api.post("/location/add", (req,res) => {
-  try {
+  //try {
     let { body } = req
 
     let obj = {
@@ -71,16 +72,16 @@ api.post("/location/add", (req,res) => {
       status: body.status,
     }
 
-    set(ref(database, 'location/' + body.locationId), obj).then(() =>{
+    set(ref(database, 'location/' + uuidv6()), obj).then(() =>{
       return httpResponse(201, "Success", {obj}, res)
-    }).catch((error) => {
-          return httpResponse(400, "Error", JSON.stringify(error), res)
-    });
+     }).catch((error) => {
+           return httpResponse(400, "Error", JSON.stringify(error), res)
+     });
     
 
-  } catch (error) {
-    return httpResponse(400, "Error", JSON.stringify(error), res)
-  }
+  // } catch (error) {
+  //   return httpResponse(400, "Error", JSON.stringify(error), res)
+  // }
 })
 
 api.post("/location/update", (req, res) => {
