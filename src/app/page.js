@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import "./page.css";
 
 const API_BASE_URL = "/api/backend";
@@ -85,11 +86,13 @@ export default function Home() {
 
             {matchingLocations.map((location) => (
               <li key={location.id} className="locationCard">
-                <p className="locationAddress">{location.address}</p>
+                <Link href={`/user?id=${location.id}`} className="locationCardLink">
+                  <p className="locationAddress">{location.address}</p>
 
-                {location.description && (
-                  <p className="locationDescription">{location.description}</p>
-                )}
+                  {location.description && (
+                    <p className="locationDescription">{location.description}</p>
+                  )}
+                </Link>
               </li>
             ))}
           </ul>
