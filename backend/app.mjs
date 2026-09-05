@@ -119,7 +119,7 @@ api.post("/location/update", (req, res) => {
 api.post("/location/delete", (req, res) => {
   try {
     let { body } = req
-    remove(ref(ref(database, 'location/' + body.locationId)))
+    remove(ref(database, 'location/' + body.locationId))
     return httpResponse(201, "Success", {}, res)
   } catch {
     return httpResponse(400, "Error", JSON.stringify(error), res)
