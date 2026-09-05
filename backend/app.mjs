@@ -148,8 +148,6 @@ api.get("/location/getpending", (req, res) => {
     }}).catch((error) => {
       return httpResponse(400, "Error", JSON.stringify(error), res)
     });
-    let filtered = Object.filter(result, a => a.status == "pending")
-    return httpResponse(201, "Success", filtered, res)
 })
 
 api.get("/location/getapproved", (req, res) => {
