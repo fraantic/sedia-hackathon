@@ -2,13 +2,8 @@
 import { useState } from 'react';
 import './page.css'
 
-export default async function Home() {
-  const [target, setTarget] = useState();
-
-
-  async function getData() {
+async function getData() {
     const url = "http://localhost:3001/location/getall";
-    try {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
@@ -16,13 +11,15 @@ export default async function Home() {
 
       const result = await response.json();
       return result;
-    } catch (error) {
-      console.error(error.message);
-      return null;
-    }
   }
 
-  const result = await getData();
+
+export default function Home() {
+  const [target, setTarget] = useState();
+  const [result, setResult] = useState();
+  getData().then((a) => setResult(a));
+
+
   const ids = result?.data ? Object.keys(result.data) : [];
   console.log(result);
 
@@ -34,7 +31,7 @@ export default async function Home() {
           <h1><strong>Report List</strong></h1>
           <ul id="sidebar-list">
             {ids.map((id) => (
-              <li key={id} onClick={() => (result.data[id])}>
+              <li key={id} onClick={() => setTarget(id)}>
                 {id}
               </li>
             ))}
@@ -45,7 +42,7 @@ export default async function Home() {
           <nav className="Content" id="main-content">
             <h1><strong>Report content</strong></h1>
             <h3>address: {result?.data && target ? result.data[target]?.address : "No data available"}</h3>
-            <p>data</p>
+            <p>email: {result?.data[target]?.email}</p>
           </nav>
         </div>
 
