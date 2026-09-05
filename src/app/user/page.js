@@ -1,4 +1,3 @@
-import styles from "./page.css";
 
 export default function Home() {
 
@@ -6,8 +5,7 @@ export default function Home() {
 
   return (
     <div>
-      {hi.map(a => a+"q")}
-      <p> Search Function Here</p>
+      user
     </div>
   );
 }
