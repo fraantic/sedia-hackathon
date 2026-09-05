@@ -45,7 +45,6 @@ function LocationDetailContent() {
         setLocation({ id: locationId, ...matchedFields });
         setFetchStatus("success");
 
-        // "Preconfigured" timestamp — see explanation below the code
         const now = new Date();
         const formattedTime = now.toLocaleTimeString([], {
           hour: "2-digit",
@@ -63,12 +62,20 @@ function LocationDetailContent() {
     fetchLocationById();
   }, [locationId]);
 
-  const isRampAvailable = location ? Number(location.rampAvailablity) > 0 : false;
-  const isWalkwayClear = location ? Number(location.obstruction) === 0 : false;
-
   const handleReportClick = () => {
-    router.push(`/report?id=${locationId}`);
+    router.push(`/user/report?id=${locationId}`);
   };
+
+  function getFieldState(rawValue) {
+    const hasData = rawValue !== undefined && rawValue !== null && rawValue !== "";
+    const isTruthy = hasData ? Boolean(rawValue) : false;
+    return { hasData, isTruthy };
+  }
+
+  const walkwayState = getFieldState(location?.walkway);
+  const rampState = getFieldState(location?.rampAvailability);
+  const parkingState = getFieldState(location?.parking);
+  const twsiState = getFieldState(location?.twsi);
 
   if (fetchStatus === "loading") {
     return (
@@ -96,17 +103,22 @@ function LocationDetailContent() {
   return (
     <main className="detailPageWrapper">
       <div className="sidePanel">
-        <div className="incidentHeader">Incident Report : None</div>
+        <div className="locationDetails">Accessibility Details</div>
 
         <ul className="checklistList">
           <li className="checklistItem">
             <span className="checklistLabel">Walkway</span>
             <span
               className={`checklistIcon ${
-                isWalkwayClear ? "checklistIconChecked" : "checklistIconUnchecked"
+                !walkwayState.hasData
+                  ? "checklistIconNoData"
+                  : walkwayState.isTruthy
+                  ? "checklistIconChecked"
+                  : "checklistIconUnchecked"
               }`}
+              title={walkwayState.hasData ? "Reported value" : "Not submitted"}
             >
-              {isWalkwayClear ? "✓" : "✕"}
+              {!walkwayState.hasData ? "N/A" : walkwayState.isTruthy ? "✓" : "✕"}
             </span>
           </li>
 
@@ -114,17 +126,31 @@ function LocationDetailContent() {
             <span className="checklistLabel">Ramp Accessibility</span>
             <span
               className={`checklistIcon ${
-                isRampAvailable ? "checklistIconChecked" : "checklistIconUnchecked"
+                !rampState.hasData
+                  ? "checklistIconNoData"
+                  : rampState.isTruthy
+                  ? "checklistIconChecked"
+                  : "checklistIconUnchecked"
               }`}
+              title={rampState.hasData ? "Reported value" : "Not submitted"}
             >
-              {isRampAvailable ? "✓" : "✕"}
+              {!rampState.hasData ? "N/A" : rampState.isTruthy ? "✓" : "✕"}
             </span>
           </li>
 
           <li className="checklistItem">
             <span className="checklistLabel">OKU Parking</span>
-            <span className="checklistIcon checklistIconNoData" title="No data available">
-              ?
+            <span
+              className={`checklistIcon ${
+                !parkingState.hasData
+                  ? "checklistIconNoData"
+                  : parkingState.isTruthy
+                  ? "checklistIconChecked"
+                  : "checklistIconUnchecked"
+              }`}
+              title={parkingState.hasData ? "Reported value" : "Not submitted"}
+            >
+              {!parkingState.hasData ? "N/A" : parkingState.isTruthy ? "✓" : "✕"}
             </span>
           </li>
 
@@ -132,11 +158,29 @@ function LocationDetailContent() {
             <span className="checklistLabel">
               TWSI (Tactile Warning Surface Indicator)
             </span>
-            <span className="checklistIcon checklistIconNoData" title="No data available">
-              ?
+            <span
+              className={`checklistIcon ${
+                !twsiState.hasData
+                  ? "checklistIconNoData"
+                  : twsiState.isTruthy
+                  ? "checklistIconChecked"
+                  : "checklistIconUnchecked"
+              }`}
+              title={twsiState.hasData ? "Reported value" : "Not submitted"}
+            >
+              {!twsiState.hasData ? "N/A" : twsiState.isTruthy ? "✓" : "✕"}
             </span>
           </li>
         </ul>
+
+        {location.details && (
+          <p className="locationExtraDetails">{location.details}</p>
+        )}
+
+        <div className="voteRow">
+          <span>👍 {location.likes ?? 0}</span>
+          <span>👎 {location.dislikes ?? 0}</span>
+        </div>
       </div>
 
       <div className="mainPanel">
@@ -150,7 +194,7 @@ function LocationDetailContent() {
             className="mapIframe"
             src={`https://maps.google.com/maps?q=${encodeURIComponent(
               location.address || ""
-            )}&output=embed`}
+            )}&t=h&output=embed`}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title="Location map"

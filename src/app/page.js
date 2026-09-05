@@ -58,8 +58,9 @@ export default function Home() {
     <main className="pageWrapper">
       <div className="searchPanel">
         <div>
-          <h1> Hello user! </h1>
+          <h1 className="welcomeTitle"> MapReport</h1>
         </div>
+
         <div className="searchBarWrapper">
           <input
             type="text"
