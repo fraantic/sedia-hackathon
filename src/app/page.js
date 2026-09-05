@@ -48,7 +48,7 @@ export default function Home() {
 
   const matchingLocations = allLocations.filter((location) => {
     const trimmedQuery = searchQuery.trim().toLowerCase();
-    if (!trimmedQuery) return true;
+    if (!trimmedQuery) return false;
 
     const searchableText = `${location.address || ""} ${location.description || ""}`.toLowerCase();
     return searchableText.includes(trimmedQuery);
