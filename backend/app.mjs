@@ -50,6 +50,8 @@ api.post('/test', (req, res) => {
     return httpResponse(201, "Success", {}, res)
 });
 
+api.post("/location/reportadd")
+
 api.post("/location/add", (req,res) => {
   //try {
     let { body } = req
@@ -87,7 +89,7 @@ api.post("/location/add", (req,res) => {
 api.post("/location/update", (req, res) => {
   try {
     let { body } = req
-
+    console.log(body)
     let obj = {
       address: body.address != null || undefined ? body.address : null,
       description: body.description != null || undefined ? body.description : null,

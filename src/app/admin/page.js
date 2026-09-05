@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import './page.css'
 
 async function getData() {
-  const url = "http://localhost:3001/location/getall";
+  const url = "http://localhost:3001/location/getpending";
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Response status: ${response.status}`);
@@ -19,8 +19,9 @@ async function updateDecision(id, status) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ Id: id, status: status }),
+    body: JSON.stringify({ locationId: id, status: status }),
   });
+  console.log(response)
   if (!response.ok) {
     throw new Error(`Response status: ${response.status}`);
   }
@@ -34,9 +35,7 @@ export default function Home() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    getData().then((a) => setResult(a)).catch((e) => setError(e.message));
-  }, []);
+  getData().then((a) => setResult(a)).catch((error) => console.log(error))
 
   const ids = result?.data ? Object.keys(result.data) : [];
 
@@ -84,7 +83,7 @@ export default function Home() {
             <h3>parking: {result?.data && target ? result.data[target]?.parking : "No data available"}</h3>
             <h3>rampAvailability: {result?.data && target ? result.data[target]?.rampAvailability : "No data available"}</h3>
             <h3>status: {result?.data && target ? result.data[target]?.status : "No data available"}</h3>
-            <h3>twst: {result?.data && target ? result.data[target]?.twst : "No data available"}</h3>
+            <h3>twst: {result?.data && target ? result.data[target]?.twsi : "No data available"}</h3>
             <h3>walkway: {result?.data && target ? result.data[target]?.walkway : "No data available"}</h3>
           </nav>
         </div>
