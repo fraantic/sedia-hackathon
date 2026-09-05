@@ -1,13 +1,16 @@
-import styles from "./page.css";
+import "./page.css";
 
 export default function Home() {
-
-  let hi = ["1","2","3","4","5"]
-
   return (
-    <div>
-      {hi.map(a => a+"q")}
-      <p> Search Function Here</p>
-    </div>
+    <main className="pageWrapper">
+        {/*Search Input*/}
+        <div className="pillItem">
+          <input
+            type="text"
+            placeholder="Search for location"
+            className="searchInput"
+          />
+        </div>
+    </main>
   );
 }
