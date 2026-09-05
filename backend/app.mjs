@@ -1,4 +1,4 @@
-import { getDatabase, ref, set  } from "firebase/database";
+import { getDatabase, ref, set, update, remove, get, child  } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import express from 'express';
 import dotenv from 'dotenv'
@@ -34,7 +34,7 @@ api.post('/test', (req, res) => {
     return httpResponse(201, "Success", {}, res)
 });
 
-api.post("/location", (req,res) => {
+api.post("/location/add", (req,res) => {
   try {
     let { body } = req
 
@@ -46,13 +46,13 @@ api.post("/location", (req,res) => {
       obstruction: body.obstruction,
       likes: 0,
       dislikes: 0,
+      status: body.status
     }
 
     set(ref(database, 'location/' + body.locationId), obj).then(() =>{
       return httpResponse(201, "Success", {obj}, res)
-    }).catch(() => {
+    }).catch((error) => {
           return httpResponse(400, "Error", JSON.stringify(error), res)
-
     });
     
 
@@ -60,6 +60,70 @@ api.post("/location", (req,res) => {
     return httpResponse(400, "Error", JSON.stringify(error), res)
   }
 })
+
+api.post("/location/like", (req, res) => {
+  try {
+    let { body } = req
+    update(ref(database, 'location/' + body.locationId), {
+      likes: body.likediff
+    })
+
+    return httpResponse(201, "Success", {}, res)
+
+    
+  } catch (error) {
+    return httpResponse(400, "Error", JSON.stringify(error), res)
+  }
+})
+
+api.post("/location/dislike", (req, res) => {
+    try {
+    let { body } = req
+    update(ref(database, 'location/' + body.locationId), {
+      dislikes: body.likediff
+    })
+
+    return httpResponse(201, "Success", {}, res)
+
+    
+  } catch (error) {
+    return httpResponse(400, "Error", JSON.stringify(error), res)
+  }
+})
+
+api.post("/location/delete", (req, res) => {
+  try {
+    let { body } = req
+    remove(ref(ref(database, 'location/' + body.locationId)))
+    return httpResponse(201, "Success", {}, res)
+  } catch {
+    return httpResponse(400, "Error", JSON.stringify(error), res)
+  }
+
+})
+
+api.get("/location/getall", (req, res) => {
+  get(child(ref(database), 'location/')).then((snapshot) => {
+    if (snapshot.exists()) {
+      return httpResponse(201, "Success", snapshot.val(), res)
+    } else {
+      return httpResponse(404, "Error", "Error no data available", res)
+    }}).catch((error) => {
+      return httpResponse(400, "Error", JSON.stringify(error), res)
+    });
+})
+
+api.get("/location/getpending", (req, res) => {
+  let { body } = req
+
+})
+
+api.post("/location/getapproved", (req, res) => {
+  let { body } = req
+
+})
+
+
 
 
 
