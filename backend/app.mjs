@@ -61,7 +61,7 @@ api.post("/location/add", (req,res) => {
       walkway: body.walkway,
       rampAvailability : body.rampAvailability,
       parking: body.parking,
-      twsi: body.twst,
+      twsi: body.twsi,
       email: body.email,
       details: body.details,
       obstruction: body.obstruction,
