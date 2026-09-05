@@ -48,9 +48,13 @@ api.post("/location", (req,res) => {
       dislikes: 0,
     }
 
-    set(ref(database, 'location/' + body.locationId), obj);
+    set(ref(database, 'location/' + body.locationId), obj).then(() =>{
+      return httpResponse(201, "Success", {obj}, res)
+    }).catch(() => {
+          return httpResponse(400, "Error", JSON.stringify(error), res)
+
+    });
     
-    return httpResponse(201, "Success", {obj}, res)
 
   } catch (error) {
     return httpResponse(400, "Error", JSON.stringify(error), res)
