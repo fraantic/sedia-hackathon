@@ -11,6 +11,13 @@ npm run dev
 
 ```
 
+Windows script issue fix
+Open power shell as admin and run
+```bash
+
+Set-ExecutionPolicy unrestricted
+
+```
 
 To run again after 
 
