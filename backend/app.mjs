@@ -22,7 +22,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const database = getDatabase();
 
 const api = express();
-api.use(express.json())
+api.use(express.json({ limit: "10mb" }));
 const port = 3001;
 
 Object.filter = (obj, predicate) => 
@@ -51,6 +51,7 @@ api.post('/test', (req, res) => {
 });
 
 //api.post("/location/reportadd")
+// Temporary fix.
 
 api.post("/location/add", (req,res) => {
   //try {
@@ -166,8 +167,96 @@ api.get("/location/getapproved", (req, res) => {
 
 })
 
+api.post("/location/report/add", (req, res) => {
+    let { body } = req
+    let reportid = uuidv6()
+    let obj = {
+      id: reportid,
+      locationId: body.locationId,
+      address: body.address != null || undefined ? body.address : null,
+      description: body.description != null || undefined ? body.description : null,
+      walkway: body.walkway != null || undefined ? body.walkway : null,
+      rampAvailability : body.rampAvailability != null || undefined ? body.rampAvailability : null,
+      parking: body.parking != null || undefined ? body.parking : null,
+      twsi: body.twst != null || undefined ? body.twst : null,
+      email: body.email != null || undefined ? body.email : null,
+      details: body.details != null || undefined ? body.details : null,
+      obstruction: body.obstruction != null || undefined ? body.obstruction : null,
+      image: body.image != null || undefined ? body.image : null,
+      ramp: body.ramp != null || undefined ? body.ramp : null,
+      status: "pending",
+    }
+
+    set(ref(database, 'report/' + reportid), removeBlankAttributes(obj)).then(() =>{
+      return httpResponse(201, "Success", removeBlankAttributes(obj), res)
+     }).catch((error) => {
+           return httpResponse(400, "Error", JSON.stringify(error), res)
+     });
+})
+
+api.post("/location/report/delete", (req, res) => {
+  try {
+    let { body } = req
+    remove(ref(database, 'report/' + body.id))
+    return httpResponse(201, "Success", {}, res)
+  } catch {
+    return httpResponse(400, "Error", JSON.stringify(error), res)
+  }
+})
 
 
+api.get("/location/report/getapproved", (req, res) => {
+  let result;
+  get(child(ref(database), 'report/')).then((snapshot) => {
+    if (snapshot.exists()) {
+      result = snapshot.val()
+      return httpResponse(201, "Success", Object.filter(result, a => a.status != "pending"), res)
+    } else {
+      return httpResponse(404, "Error", "Error no data available", res)
+    }}).catch((error) => {
+      return httpResponse(400, "Error", JSON.stringify(error), res)
+    });
+})
+
+api.get("/location/report/getpending", (req, res) => {
+  let result;
+  get(child(ref(database), 'report/')).then((snapshot) => {
+    if (snapshot.exists()) {
+      result = snapshot.val()
+      return httpResponse(201, "Success", Object.filter(result, a => a.status == "pending"), res)
+    } else {
+      return httpResponse(404, "Error", "Error no data available", res)
+    }}).catch((error) => {
+      return httpResponse(400, "Error", JSON.stringify(error), res)
+    });
+})
+
+api.post("/location/report/approve", (req, res) => {
+
+    let { body } = req
+    let results;
+    get(child(ref(database), 'report/' + body.id)).then((snapshot) => {
+      if (snapshot.exists()) {
+        results = snapshot.val()
+        update(ref(database, 'location/' + results.locationId), results)
+        let updateobj = {
+          status: "approved"
+        }
+        update(ref(database, 'report/' + body.id), updateobj)
+        return httpResponse(201, "Success", removeBlankAttributes(results), res)
+
+      } else {
+        return httpResponse(404, "Error", "Error no data available", res)
+      }}).catch((error) => {
+        return httpResponse(400, "Error", JSON.stringify(error), res)
+      });
+  
+
+
+
+
+
+})
 
 
 api.listen(port, () => {

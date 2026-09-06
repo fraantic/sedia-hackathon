@@ -6,6 +6,7 @@ const nextConfig = {
         source: "/api/backend/:path*",
         //destination: "http://169.254.83.107:3001/:path*",
         destination: "http://localhost:3001/:path*",
+
       },
     ];
   },

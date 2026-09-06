@@ -10,11 +10,12 @@ function LocationDetailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const locationId = searchParams.get("id");
-
   const [location, setLocation] = useState(null);
   const [fetchStatus, setFetchStatus] = useState("loading");
   const [errorMessage, setErrorMessage] = useState("");
   const [lastUpdatedLabel, setLastUpdatedLabel] = useState("");
+  const [userVote, setUserVote] = useState(null);
+  const [voteInFlight, setVoteInFlight] = useState(false);
 
   useEffect(() => {
     async function fetchLocationById() {
@@ -52,6 +53,13 @@ function LocationDetailContent() {
         });
         const formattedDate = now.toLocaleDateString();
         setLastUpdatedLabel(`${formattedTime} ${formattedDate}`);
+
+        // Check localStorage for a prior vote on this specific location.
+        // Keyed per-locationId so voting on one place doesn't affect another.
+        const storedVote = localStorage.getItem(`vote_${locationId}`);
+        if (storedVote === "like" || storedVote === "dislike") {
+          setUserVote(storedVote);
+        }
       } catch (error) {
         console.error(error.message);
         setErrorMessage(error.message || "Could not load this location.");
@@ -76,6 +84,59 @@ function LocationDetailContent() {
   const rampState = getFieldState(location?.rampAvailability);
   const parkingState = getFieldState(location?.parking);
   const twsiState = getFieldState(location?.twsi);
+
+  async function handleVote(newVote) {
+    if (voteInFlight || !location) return;
+
+    const isUndoingVote = userVote === newVote;
+    const nextVote = isUndoingVote ? null : newVote;
+
+  
+    let newLikes = location.likes ?? 0;
+    let newDislikes = location.dislikes ?? 0;
+
+    if (userVote === "like") newLikes -= 1;
+    if (userVote === "dislike") newDislikes -= 1;
+
+    if (nextVote === "like") newLikes += 1;
+    if (nextVote === "dislike") newDislikes += 1;
+
+    const previousLocation = location;
+    const previousVote = userVote;
+
+    setLocation({ ...location, likes: newLikes, dislikes: newDislikes });
+    setUserVote(nextVote);
+    setVoteInFlight(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/location/update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          locationId,
+          likes: newLikes,
+          dislikes: newDislikes,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      if (nextVote) {
+        localStorage.setItem(`vote_${locationId}`, nextVote);
+      } else {
+        localStorage.removeItem(`vote_${locationId}`);
+      }
+    } catch (error) {
+      console.error(error.message);
+
+      setLocation(previousLocation);
+      setUserVote(previousVote);
+    } finally {
+      setVoteInFlight(false);
+    }
+  }
 
   if (fetchStatus === "loading") {
     return (
@@ -178,8 +239,22 @@ function LocationDetailContent() {
         )}
 
         <div className="voteRow">
-          <span>👍 {location.likes ?? 0}</span>
-          <span>👎 {location.dislikes ?? 0}</span>
+          <button
+            type="button"
+            className={`voteButton ${userVote === "like" ? "voteButtonActiveLike" : ""}`}
+            onClick={() => handleVote("like")}
+            disabled={voteInFlight}
+          >
+            👍 {location.likes ?? 0}
+          </button>
+          <button
+            type="button"
+            className={`voteButton ${userVote === "dislike" ? "voteButtonActiveDislike" : ""}`}
+            onClick={() => handleVote("dislike")}
+            disabled={voteInFlight}
+          >
+            👎 {location.dislikes ?? 0}
+          </button>
         </div>
 
                       <div className="recentReportRow">
