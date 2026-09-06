@@ -21,7 +21,8 @@ body {
   width: 100%;
   padding: 28px;
   box-sizing: border-box;
-  background: linear-gradient(180deg, #414141 0%, #424242 50%, #292929a9 100%);
+  background: #000000;
+  background: linear-gradient(0deg, rgb(79, 79, 79) 0%, rgb(221, 221, 221) 100%);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   align-items: flex-start;
   overflow: hidden;
@@ -212,8 +213,9 @@ body {
 }
 
 .reportButton:hover {
-  background: rgba(234, 67, 53, 0.15);
+  background: #ea4335;
   border-color: #ea4335;
+  color: #ffffff;
   box-shadow: 0 0 16px rgba(234, 67, 53, 0.3);
   transform: translateY(-1px);
 }
@@ -266,4 +268,40 @@ body {
   .mapFrameWrapper {
     height: 380px;
   }
+}
+
+.voteRow {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.voteButton {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #eeeeee;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.voteButton:hover:not(:disabled) {
+  background-color: #8d8d8d;
+}
+
+.voteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.voteButtonActiveLike {
+  background-color: #e6f4ea;
+  border-color: #34a853;
+}
+
+.voteButtonActiveDislike {
+  background-color: #fdecea;
+  border-color: #c0392b;
 }

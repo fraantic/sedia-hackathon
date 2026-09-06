@@ -22,7 +22,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const database = getDatabase();
 
 const api = express();
-api.use(express.json())
+api.use(express.json({ limit: "10mb" }));
 const port = 3001;
 
 Object.filter = (obj, predicate) => 

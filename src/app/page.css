@@ -3,7 +3,8 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(180deg, #181818 0%, #504f4f 50%, #727272a9 100%);
+  background: #000000;
+  background: linear-gradient(0deg, rgb(79, 79, 79) 0%, rgb(221, 221, 221) 100%);
   overflow-x: hidden;
 }
 
@@ -14,7 +15,7 @@ body {
   width: 100%;
   align-items: center;
   justify-content: center;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: ui-rounded, "Arial Rounded MT Bold", "Nunito", sans-serif;
   padding: 20px;
   box-sizing: border-box;
   overflow: hidden;
@@ -40,7 +41,7 @@ body {
 
 .welcomeTitle {
   font-size: 26px;
-  font-weight: 700;
+  font-weight: 500;
   color: #ffffff;
   margin: 0 0 4px 0;
   letter-spacing: -0.5px;
@@ -62,34 +63,30 @@ body {
 .searchBarWrapper::before {
   content: "";
   position: absolute;
-  inset: -2px; /* Expands slightly outward to form the border width */
+  inset: -2px;
+  /* Expands slightly outward to form the border width */
   border-radius: 20px;
-  background: linear-gradient(
-    90deg,
-    #ea4335,
-    #fbbc05,
-    #34a853,
-    #4285f4
-  );
+  background: linear-gradient(90deg,
+      #ea4335,
+      #05fb53);
   background-size: 100% 100%;
   animation: geminiFlow 4s linear infinite;
-  opacity: 0; /* Hidden by default */
+  opacity: 0;
   transition: opacity 0.2s ease, filter 0.3s ease;
   z-index: 0;
   pointer-events: none;
 }
 
-/* Activate Glow on Input Focus/Typing */
 .searchBarWrapper:focus-within::before {
   opacity: 1;
-  filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5))
-         drop-shadow(0 0 15px rgba(233, 233, 233, 0.3));
+  filter: drop-shadow(0 0 8px rgba(226, 226, 227, 0.5)) drop-shadow(0 0 15px rgba(233, 233, 233, 0.3));
 }
 
 /* Input Styles */
 .searchInput {
   position: relative;
-  z-index: 1; /* Keeps input above the animated background */
+  z-index: 1;
+  /* Keeps input above the animated background */
   width: 100%;
   height: 100%;
   border: 1px solid rgba(255, 255, 255, 0.12);
