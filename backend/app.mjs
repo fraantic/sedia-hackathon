@@ -194,6 +194,16 @@ api.post("/location/report/add", (req, res) => {
      });
 })
 
+api.post("/location/report/delete", (req, res) => {
+  try {
+    let { body } = req
+    remove(ref(database, 'report/' + body.id))
+    return httpResponse(201, "Success", {}, res)
+  } catch {
+    return httpResponse(400, "Error", JSON.stringify(error), res)
+  }
+})
+
 
 api.get("/location/report/getapproved", (req, res) => {
   let result;
