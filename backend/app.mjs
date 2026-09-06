@@ -50,7 +50,8 @@ api.post('/test', (req, res) => {
     return httpResponse(201, "Success", {}, res)
 });
 
-api.post("/location/reportadd")
+//api.post("/location/reportadd")
+// Temporary fix.
 
 api.post("/location/add", (req,res) => {
   //try {
