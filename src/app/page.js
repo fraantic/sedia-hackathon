@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import "./page.css";
 
 const API_BASE_URL = "/api/backend";
@@ -47,7 +48,7 @@ export default function Home() {
 
   const matchingLocations = allLocations.filter((location) => {
     const trimmedQuery = searchQuery.trim().toLowerCase();
-    if (!trimmedQuery) return true;
+    if (!trimmedQuery) return false;
 
     const searchableText = `${location.address || ""} ${location.description || ""}`.toLowerCase();
     return searchableText.includes(trimmedQuery);
@@ -57,8 +58,9 @@ export default function Home() {
     <main className="pageWrapper">
       <div className="searchPanel">
         <div>
-          <h1> Hello user! </h1>
+          <h1 className="welcomeTitle"> MapReport</h1>
         </div>
+
         <div className="searchBarWrapper">
           <input
             type="text"
@@ -85,11 +87,13 @@ export default function Home() {
 
             {matchingLocations.map((location) => (
               <li key={location.id} className="locationCard">
-                <p className="locationAddress">{location.address}</p>
+                <Link href={`/user?id=${location.id}`} className="locationCardLink">
+                  <p className="locationAddress">{location.address}</p>
 
-                {location.description && (
-                  <p className="locationDescription">{location.description}</p>
-                )}
+                  {location.description && (
+                    <p className="locationDescription">{location.description}</p>
+                  )}
+                </Link>
               </li>
             ))}
           </ul>

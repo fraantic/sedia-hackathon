@@ -1,107 +1,198 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: #000000;
+  background: linear-gradient(0deg, rgb(79, 79, 79) 0%, rgb(221, 221, 221) 100%);
+  overflow-x: hidden;
+}
+
 .pageWrapper {
+  position: relative;
   display: flex;
   min-height: 100vh;
   width: 100%;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
-  font-family: inherit;
+  font-family: ui-rounded, "Arial Rounded MT Bold", "Nunito", sans-serif;
   padding: 20px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .searchPanel {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 640px; 
-  background-color: #ffffff;
+  max-width: 600px;
+  background: rgba(22, 22, 26, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 28px;
-  padding: 16px;
+  padding: 28px;
   box-sizing: border-box;
-  gap: 14px;
+  gap: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+.welcomeTitle {
+  font-size: 26px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
+}
+
+
 .searchBarWrapper {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 64px;
-  border-radius: 16px;
-  overflow: hidden;
+  height: 56px;
+  border-radius: 18px;
   box-sizing: border-box;
 }
 
+/* Animated Gemini Border Glow Layer */
+.searchBarWrapper::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  /* Expands slightly outward to form the border width */
+  border-radius: 20px;
+  background: linear-gradient(90deg,
+      #ea4335,
+      #05fb53);
+  background-size: 100% 100%;
+  animation: geminiFlow 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.2s ease, filter 0.3s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.searchBarWrapper:focus-within::before {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(226, 226, 227, 0.5)) drop-shadow(0 0 15px rgba(233, 233, 233, 0.3));
+}
+
+/* Input Styles */
 .searchInput {
+  position: relative;
+  z-index: 1;
+  /* Keeps input above the animated background */
   width: 100%;
   height: 100%;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
   outline: none;
-  text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
-  color: #f7f7f7;
+  color: #ffffff;
   padding: 0 20px;
   box-sizing: border-box;
-  background: linear-gradient(
-    135deg,
-    rgba(47, 76, 110, 1) 0%,
-    rgba(63, 114, 175, 1) 60%,
-    rgba(161, 192, 230, 1) 100%
-  );
+  background: #202026;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hide default border on focus so the gradient shows cleanly */
+.searchBarWrapper:focus-within .searchInput {
+  border-color: transparent;
+  background: #24242c;
 }
 
 .searchInput::placeholder {
-  color: white;
+  color: #8a8a9a;
   opacity: 1;
 }
 
+.searchInput:focus {
+  background: #282832;
+  border-color: #4285f4;
+  box-shadow: 0 0 16px rgba(66, 133, 244, 0.3);
+}
+
+.searchInput::placeholder {
+  color: #8a8a9a;
+  opacity: 1;
+}
+
+/* Status Messages */
 .statusMessage {
   text-align: center;
   font-size: 14px;
-  color: #333333;
-  padding: 8px 0;
+  color: #a0a0b0;
+  padding: 12px 0;
+  margin: 0;
+  animation: fadeIn 0.25s ease-out forwards;
 }
 
 .statusMessageError {
-  color: #c0392b;
+  color: #ff5555;
+  font-weight: 500;
 }
 
+/* Scrollable Location List */
 .locationResultsList {
   list-style: none;
   margin: 0;
-  padding: 4px;
+  padding: 2px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 420px;
-
+  max-height: 380px;
   overflow-y: auto;
-  scrollbar-width: none;   
-  -ms-overflow-style: none;  
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  animation: expandResults 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top center;
 }
 
 .locationResultsList::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }
 
+.locationResultsList::-webkit-scrollbar {
+  display: none;
+}
+
+/* Result Cards */
 .locationCard {
-  background-color: #f5f5f5;
-  border: 1px solid #dddddd;
-  border-radius: 14px;
-  padding: 14px 18px;
-  color: #111111;
+  background-color: #202026;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 16px 20px;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.locationCard:hover {
+  background-color: #282832;
+  border-color: rgba(66, 133, 244, 0.4);
+  transform: translateY(-2px);
+}
+
+.locationCardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .locationAddress {
   font-weight: 600;
   font-size: 16px;
-  margin: 0 0 6px 0;
+  color: #ffffff;
+  margin: 0 0 4px 0;
 }
 
 .locationDescription {
   font-size: 14px;
-  color: #555555;
-  margin: 0 0 10px 0;
+  color: #9e9ea8;
+  margin: 0;
+  line-height: 1.4;
 }

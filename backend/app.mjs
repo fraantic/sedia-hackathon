@@ -22,7 +22,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const database = getDatabase();
 
 const api = express();
-api.use(express.json())
+api.use(express.json({ limit: "10mb" }));
 const port = 3001;
 
 Object.filter = (obj, predicate) => 
@@ -49,6 +49,9 @@ function removeBlankAttributes(obj) {
 api.post('/test', (req, res) => {
     return httpResponse(201, "Success", {}, res)
 });
+
+//api.post("/location/reportadd")
+// Temporary fix.
 
 api.post("/location/add", (req,res) => {
   //try {
@@ -87,7 +90,7 @@ api.post("/location/add", (req,res) => {
 api.post("/location/update", (req, res) => {
   try {
     let { body } = req
-
+    console.log(body)
     let obj = {
       address: body.address != null || undefined ? body.address : null,
       description: body.description != null || undefined ? body.description : null,

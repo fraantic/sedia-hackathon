@@ -1,0 +1,396 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(0deg, rgb(79, 79, 79) 0%, rgb(221, 221, 221) 100%);
+  font-family: ui-rounded, "Arial Rounded MT Bold", "Nunito", sans-serif;
+  overflow-x: hidden;
+  color: #ffffff;
+}
+
+.reportPageWrapper {
+  min-height: 100vh;
+  width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.reportLayout {
+  display: flex;
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.sidePanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 280px;
+  flex-shrink: 0;
+}
+
+/* Card Surface Styling */
+.toggleRow,
+.imageUploadBox,
+.locationHeader,
+.emailInput,
+.detailsBox,
+.obstructionRow,
+.actionRow {
+  background: rgba(22, 22, 26, 0.90);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  padding: 14px 18px;
+  gap: 12px;
+}
+
+.toggleLabel {
+  font-size: 14px;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+.toggleButtonGroup {
+  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #1a1a1e;
+}
+
+.toggleOption {
+  padding: 6px 14px;
+  font-size: 13px;
+  background: #202026;
+  border: none;
+  cursor: pointer;
+  color: #9a9ab0;
+  transition: all 0.2s ease;
+}
+
+.toggleOption:first-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.toggleOption:hover:not(.toggleOptionActive) {
+  color: #ffffff;
+  background: #2a2a32;
+}
+
+.toggleOptionActive {
+  background-color: #2f4c6e;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.imageUploadBox {
+  border-radius: 20px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.imageUploadBox:hover {
+  border-color: rgba(66, 133, 244, 0.5);
+}
+
+.imageUploadLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #b0b0c0;
+  font-size: 14px;
+}
+
+.imageUploadIcon {
+  font-size: 32px;
+  color: #4285f4;
+}
+
+.imageUploadInput {
+  display: none;
+}
+
+.imagePreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageRemoveButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #202026;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.imageRemoveButton:hover {
+  background: #ea4335;
+}
+
+.mainPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.locationHeader {
+  border-radius: 20px;
+  padding: 16px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.emailInput {
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: #202026;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.emailInput::placeholder {
+  color: #777788;
+}
+
+.emailInput:focus {
+  border-color: #4285f4;
+  box-shadow: 0 0 12px rgba(66, 133, 244, 0.3);
+}
+
+.detailsBox {
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 260px;
+}
+
+.detailsLabel {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #202026;
+  color: #c0c0d0;
+  border-radius: 12px;
+  padding: 6px 14px;
+  font-size: 13px;
+  width: fit-content;
+}
+
+.detailsTextarea {
+  flex: 1;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: #ffffff;
+  background: transparent;
+}
+
+.detailsTextarea::placeholder {
+  color: #777788;
+}
+
+.obstructionRow {
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.obstructionLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.obstructionSliderWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.obstructionSlider {
+  flex: 1;
+  accent-color: #4285f4;
+  cursor: pointer;
+}
+
+.obstructionEndLabel {
+  font-size: 13px;
+  color: #c0c0d0;
+}
+
+.obstructionSubLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #8a8a9a;
+}
+
+.submitErrorMessage {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin: 0;
+}
+
+.submitSuccessMessage {
+  color: #34a853;
+  font-size: 13px;
+  margin: 0;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.submitButton,
+.cancelButton {
+  border-radius: 16px;
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.submitButton {
+  border: 1px solid #2f4c6e;
+  background: #2f4c6e;
+  color: #ffffff;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #3d638f;
+  border-color: #4285f4;
+  box-shadow: 0 0 12px rgba(66, 133, 244, 0.3);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #c0c0d0;
+}
+
+.cancelButton:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Confirmation Modal */
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.confirmDialog {
+  background: #16161a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 340px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.confirmMessage {
+  font-size: 14px;
+  color: #e0e0e0;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.confirmActionRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.confirmDiscardButton {
+  border: 1px solid #ea4335;
+  color: #ff6b6b;
+  background: rgba(234, 67, 53, 0.15);
+  border-radius: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.confirmDiscardButton:hover {
+  background: #ea4335;
+  color: #ffffff;
+}
+
+.confirmKeepEditingButton {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #202026;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.confirmKeepEditingButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
