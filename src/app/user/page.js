@@ -181,7 +181,24 @@ function LocationDetailContent() {
           <span>👍 {location.likes ?? 0}</span>
           <span>👎 {location.dislikes ?? 0}</span>
         </div>
+
+                      <div className="recentReportRow">
+          <span className="recentReportLabel">Recent Report:</span>
+          <span className="recentReportValue">
+            {location.recentReport || "No recent report"}
+          </span>
+        </div>
+        <div> 
+            <button className="Reports" onClick={handleReportClick}>
+            Report ⚠
+          </button>
+
+   
+        </div>
+
       </div>
+
+
 
       <div className="mainPanel">
         <button className="addressHeader" onClick={() => router.push("/")}>
@@ -201,13 +218,70 @@ function LocationDetailContent() {
           />
         </div>
 
+        <div className="locationFieldList">
+  <h1 className="locationFieldListTitle">Reports</h1>
+
+  <div className="locationFieldGrid">
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">ID</span>
+      <span className="locationFieldValue">{location?.id || "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Address</span>
+      <span className="locationFieldValue">{location?.address || "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Description</span>
+      <span className="locationFieldValue">{location?.description || "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Details</span>
+      <span className="locationFieldValue">{location?.details || "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Dislikes</span>
+      <span className="locationFieldValue">{location?.dislikes ?? "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Email</span>
+      <span className="locationFieldValue">{location?.email || "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Likes</span>
+      <span className="locationFieldValue">{location?.likes ?? "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Obstruction</span>
+      <span className="locationFieldValue">{location?.obstruction || "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Parking</span>
+      <span className="locationFieldValue">{location?.parking ?? "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Ramp Availability</span>
+      <span className="locationFieldValue">{location?.rampAvailability ?? "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">TWSI</span>
+      <span className="locationFieldValue">{location?.twsi ?? "No data available"}</span>
+    </div>
+    <div className="locationFieldItem">
+      <span className="locationFieldLabel">Walkway</span>
+      <span className="locationFieldValue">{location?.walkway ?? "No data available"}</span>
+    </div>
+  </div>
+</div>
+
         <div className="footerRow">
           <span className="lastUpdatedText">
             Last Updated: {lastUpdatedLabel}
           </span>
-          <button className="reportButton" onClick={handleReportClick}>
-            Report ⚠
-          </button>
+      
+        </div>
+
+        <div> 
+          
         </div>
       </div>
     </main>

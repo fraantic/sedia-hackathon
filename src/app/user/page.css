@@ -40,6 +40,7 @@ body {
   box-sizing: border-box;
   gap: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  min-height: 90vh;
 }
 
 .locationDetails {
@@ -251,6 +252,133 @@ body {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  flex-shrink: 0;
+  gap: 24px;
+}
+
+.recentReportRow {
+  display: flex;
+  flex-direction: column;
+  width: 100%;          /* was 300px, now fills .leftColumn */
+  background: rgba(22, 22, 26, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 24px;
+  box-sizing: border-box;
+  gap: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  font-size: 15px;
+  color: #a0a0b0;
+  padding: 8px 0;
+  text-align: center;
+}
+
+.locationFieldList {
+  position: relative;
+  display: flex;
+  gap: 24px;
+   backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  width: 100%;
+  padding: 28px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #414141 0%, #424242 50%, #292929a9 100%);
+  color: #a0a0b0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.locationFieldList {
+  position: relative;
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  width: 100%;
+  padding: 28px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #414141 0%, #424242 50%, #292929a9 100%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.locationFieldListTitle {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #d5d5dd;
+  align-self: center;
+}
+
+.locationFieldGrid {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 18px 24px;
+}
+
+.locationFieldItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.locationFieldLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8a8a98;
+}
+
+.locationFieldValue {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #e4e4ec;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.Reports {
+  background: rgba(22, 22, 26, 0.85);
+  border: 1px solid rgba(234, 67, 53, 0.3);
+  border-radius: 16px;
+  padding: 18px 24px;      /* was 14px 24px — taller */
+  font-size: 17px;         /* was 15px */
+  font-weight: 600;
+  color: #ff5555;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;             /* fills sidebar width instead of shrink-wrapping */
+  transition: all 0.25s ease;
+}
+.Reports:hover {  
+  background: rgba(234, 67, 53, 0.15);
+  border-color: #ea4335;
+  box-shadow: 0 0 16px rgba(234, 67, 53, 0.3);
+  transform: translateY(-1px);
+}
+@media (max-width: 640px) {
+  .locationFieldList {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 820px) {
