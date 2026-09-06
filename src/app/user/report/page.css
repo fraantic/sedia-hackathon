@@ -3,7 +3,6 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  /* Kept background gradient as requested */
   background: linear-gradient(0deg, rgb(79, 79, 79) 0%, rgb(221, 221, 221) 100%);
   font-family: ui-rounded, "Arial Rounded MT Bold", "Nunito", sans-serif;
   overflow-x: hidden;
@@ -67,7 +66,7 @@ body {
 .toggleButtonGroup {
   display: flex;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 14px;
+  border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
   background: #1a1a1e;
