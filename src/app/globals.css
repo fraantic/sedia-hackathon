@@ -1,0 +1,9 @@
+/* Add this to your global CSS file */
+nextjs-portal {
+  display: none !important;
+}
+
+body {
+  /* Next.js often locks scrolling when an error occurs; this overrides it */
+  overflow: auto !important; 
+}
