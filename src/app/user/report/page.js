@@ -87,7 +87,7 @@ function ReportFormContent() {
     setSubmitErrorMessage("");
 
     try {
-      const response = await fetch(`${API_BASE_URL}/location/update`, {
+      const response = await fetch(`${API_BASE_URL}/location/report/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
